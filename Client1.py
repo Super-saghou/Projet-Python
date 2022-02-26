@@ -18,21 +18,24 @@ class Client:
 
         self.gui_done = False
         self.running = True 
+        print("Erreur")
 
         gui_thread = threading.Thread(target= self.gui_loop)
         receive_thread = threading.Thread(target= self.receive)
 
         gui_thread.start()
         receive_thread.start()
+        print("Erreur1")
 
     def gui_loop(self):
         self.win = tkinter.Tk()
         self.win.configure(bg="")
 
 
-        self.chat_label = tkinter.Label(self.win, text="Chat:",bg="red")
+        self.chat_label = tkinter.Label(self.win, text="Chat:",bg="white")
         self.chat_label.config(font=('Arial',12))
         self.chat_label.pack(padx=20,pady=5)
+        print("Erreur2")
 
 
         self.text_area = tkinter.scrolledtext.ScrolledText(self.win)
@@ -42,6 +45,7 @@ class Client:
         self.msg_label = tkinter.Label(self.win, text="Message",bg="white")
         self.msg_label.config(font=("Arial",12))
         self.msg_label.pack(padx=20,pady=5)
+        print("Erreur3")
 
         self.input_area = tkinter.Text(self.win , height=3)
         self.input_area.pack(padx=20 , pady=5)
@@ -52,9 +56,11 @@ class Client:
 
         self.gui_done = True
         self.win.protocol("WM_DELETE_WINDOW", self.stop)
+        self.win.mainloop()
+        print("Erreur4")
 
 
-
+        
     def receive(self):
         while self.running:
             try:
@@ -67,21 +73,26 @@ class Client:
                         self.text_area.insert('end',message)
                         self.text_area.yview('end')
                         self.text_area.config(state='disabled')
+            
             except:
-                print('Erreur')
+                print("Error")
                 self.soc.close()
                 break
+        print("Erreur5")
 
     def write(self):
         message = f"{self.pseudo}:{self.input_area.get('1.0','end')}"
         self.soc.send(message.encode())
-        self.input_area.delete('1.0','end')
+        self.input_area.delete('1.0','end')       
+
 
     def stop(self):
         self.running = False
-        self.win.destory()
+        self.win.destroy()
         self.soc.close()
-        exit(0)   
+        exit(0)  
+
+      
 
 client = Client(HOST,PORT)
     
