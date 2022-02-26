@@ -9,8 +9,8 @@ PORT = 5566
 
 class Client:
     def __init__(self,host,port):
-        self.soc = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        self.soc.connect((host,port))
+        self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.sock.connect((host,port))
 
         msg = tkinter.Tk()
         msg.withdraw
@@ -51,7 +51,7 @@ class Client:
         self.input_area.pack(padx=20 , pady=5)
 
         self.send_button = tkinter.Button(self.win , text='Send',command = self.write)
-        self.send_button.config(font=('Arial',12))
+        self.send_button.config(font=("Arial",12))
         self.send_button.pack(padx=20,pady= 5)
 
         self.gui_done = True
@@ -64,32 +64,31 @@ class Client:
     def receive(self):
         while self.running:
             try:
-                message = self.soc.recv(1024)
+                message = self.sock.recv(1024)
                 if message =='NICK':
-                    self.soc.send(self.pseudo.encode())
+                    self.sock.send(self.pseudo.encode())
                 else:
                     if self.gui_done:
-                        self.text_area.cofig(state = 'normal')
+                        self.text_area.config(state = 'normal')
                         self.text_area.insert('end',message)
                         self.text_area.yview('end')
                         self.text_area.config(state='disabled')
-            
-            except:
-                print("Error")
-                self.soc.close()
+            except ConnectionAbortedError:
                 break
+
         print("Erreur5")
 
     def write(self):
-        message = f"{self.pseudo}:{self.input_area.get('1.0','end')}"
-        self.soc.send(message.encode())
-        self.input_area.delete('1.0','end')       
+        message =f"{self.pseudo}: {self.input_area.get('1.0','end')}"
+        self.sock.send(message.encode('utf-8'))
+        self.input_area.delete('1.0','end')      
+        print("Erreur 6") 
 
 
     def stop(self):
         self.running = False
         self.win.destroy()
-        self.soc.close()
+        self.sock.close()
         exit(0)  
 
       
