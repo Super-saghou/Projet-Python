@@ -21,7 +21,7 @@ def start_camera_stream():
     t2 = threading.Thread(target=sending.start_stream)
     t2.start()
 
-    while input("") != "STOP":
+    while input("") != "stop":
         continue
 
     receiving.stop_server()
