@@ -31,10 +31,10 @@ def start_camera_stream():
 
 
 def start_audio_stream():
-    receiver = AudioReceiver('192.168.1.4',6666)
+    receiver = AudioReceiver(local_ip_adress,6666)
     receive_thread = threading.Thread(target=receiver.start_server)
 
-    sender = AudioSender('192.168.1.4',5555)
+    sender = AudioSender(local_ip_adress,5555)
     sender_thread = threading.Thread(target=sender.start_stream)
 
     receive_thread.start()
