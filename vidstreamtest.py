@@ -10,8 +10,8 @@ local_ip_adress = socket.gethostbyname(socket.gethostname())
 
 
 def start_camera_stream():
-    receiving = StreamingServer('192.168.1.4',7777)
-    sending = CameraClient('192.168.1.4',7777)
+    receiving = StreamingServer(local_ip_adress,7777)
+    sending = CameraClient(local_ip_adress,7777)
 
     t1 = threading.Thread(target=receiving.start_server)
     t1.start()
