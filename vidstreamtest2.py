@@ -10,8 +10,8 @@ local_ip_adress = socket.gethostbyname(socket.gethostname())
 
 
 def start_camera_stream():
-    receiving = StreamingServer('192.168.1.4',7777)
-    sending = CameraClient('192.168.1.4',7777)
+    receiving = StreamingServer(local_ip_adress,7777)
+    sending = CameraClient(local_ip_adress,7777)
 
     t1 = threading.Thread(target=receiving.start_server)
     t1.start()
@@ -31,10 +31,10 @@ def start_camera_stream():
 
 
 def start_audio_stream():
-    receiver = AudioReceiver('192.168.1.4',5555)
+    receiver = AudioReceiver(local_ip_adress,5555)
     receive_thread = threading.Thread(target=receiver.start_server)
 
-    sender = AudioSender('192.168.1.4',6666)
+    sender = AudioSender(local_ip_adress,6666)
     sender_thread = threading.Thread(target=sender.start_stream)
 
     receive_thread.start()
